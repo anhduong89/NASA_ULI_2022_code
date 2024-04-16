@@ -30,8 +30,6 @@ init_energy(D, B/(DCR*speed)) :- init_battery(D, B), dischg_rate(D, DCR).
 &diff {afterCharge(D, X)-0} <= 60 :- seg(X), agent(D).
 &diff {beforeCharge(D, X)-0} <= 60 :- seg(X), agent(D).
 
-
-
 % compute the cost regard the trip assignment and charging time, lmp_mer will be average value of give segment.
 % cost(D, C) :- TCt = #sum{Ct*RATE, X:as(D, (V, _), X), ch_time(D, X, Ct), lmp_mer(V, X, RATE)}, agent(D), C = TCt/6.
 cost(D, Ct*time_ratio*R/2, X) :- as(D, _, X), ch_time(D, X, Ct), lmp_mer(V, X, R).
