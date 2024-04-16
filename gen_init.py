@@ -9,7 +9,7 @@ def get(val, default):
 
 
 nAgents = int(sys.argv[1])
-fName = '/Users/duong/Documents/GitHub/NASA_ULI_2022/1/drone-planning-v2/encodings/input.lp'
+fName = 'init.lp'
 #init location
 #discharge rate
 #emax
@@ -61,6 +61,6 @@ for var, atom_name in zip(variable, atoms_name):
 
 f.close()
 
-os.system("clingo-dl planning.lp data.lp input.lp -t1 --outf=0 -V0 -q1 --out-atomf=%s. | tr ' ' '\n' ")
+
     
     

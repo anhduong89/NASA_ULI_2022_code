@@ -1,34 +1,3 @@
-%9.1.2-planning
-%Nathan formulation
-% gamma dollar per ton conversion for MER
-% should look for two step forward but doing optimize single step.
-% alpha dollar per mile to calculate fare, $/mile
-#const alpha=1. % round up from 0.5 $/mile
-#const dividealpha=2. % any multiplication with alpha must divide to dividealpha
-#const gamma=185. % $/ton
-#const speed=4. % 4mile per minute 240mph
-#const accuracy = 100. % /100
-#const dischg_rate=4.
-#const capacity = 4.
-
-% weight atom, need to change if capacity is not homogeneous
-max_weight(4).
-weight(0).
-weight(W+1) :- max_weight(MW), weight(W), W < MW.
-
-
-% generate segment ground atoms unit.
-max_number_of_seg(10).
-seg(0).
-seg(X+1) :- seg(X), max_number_of_seg(M), X < M.
-
-% ----- GENERATE ROUTING
-%assign trip to segment
-1 { as(D, (V, V'), X): edge(V, V')} 1 :- seg(X), agent(D), max_number_of_seg(MX), X < MX.
-
-:- as(D, (_, V), X), as(D, (V', _), X+1), V != V'.
-
-:- as(D, (V, _), 0), init_loc(D, V'), V != V'.
 
 % ----- ASSIGN CHARGE DURATION
 % energy level converted to energy-flight time( minutes that agents are able to be on the sky)
@@ -69,6 +38,3 @@ cost(D, Ct*time_ratio*R/2, X) :- as(D, _, X), ch_time(D, X, Ct), lmp_mer(V, X, R
 
 % #minimize{C,D, X: cost(D, C, X)}.
 
-#show init_energy/2.
-#show init_battery/2.
-#show as/3.

@@ -3,7 +3,7 @@
 &diff {0-start(D, E, 0)} = -Ct*time_ratio :- as(D, E, 0), ch_time(D, 0, Ct).
 
 % start time at vertiport X+1 - start time vertiport X = flight time (X, X+1) + charge time at vertiport X+1 
-&diff {start(D, E', X+1)-start(D, E, X)} = T+Ct*time_ratio :- as(D, E', X+1), ch_time(D, X+1, Ct), distance(E, S), T = (S/speed), as(D, E, X).
+&diff {start(D, E', X+1)-start(D, E, X)} = Ft+Ct*time_ratio :- as(D, E', X+1), ch_time(D, X+1, Ct), distance(E, S), Ft = (S/speed), as(D, E, X).
 
 % ------ DELIVERY SCHEDULE
 % assign number of passengers
@@ -20,12 +20,9 @@ as_w(D, (V, V), X, 0) :- as(D, (V, V), X).
 % total passengers pick up at route E not excess demand.
 :- TW = #sum{W: as_w(D, E, _, W)}, request(N, E, RW), TW > RW.
 
+% restrict the time of last trip not excess the horizon.
+&diff {start(D, E, M-1)-0} <= H-Ft :- as(D, E, M-1), max_number_of_seg(M), distance(E, S), Ft = S/speed, horizon(H).
+
 % revenue for each agent D at route X
 revenue(S*W*alpha/dividealpha, D, X) :- as_w(D, E, X, W), distance(E, S).
 
-#show.
-#show dl/2.
-#show cost/3.
-#show revenue/3.
-#show as/3.
-#show ch_time/3.
