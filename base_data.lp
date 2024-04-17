@@ -74,7 +74,7 @@ request(19, (mbf, crj), 20).
 vertiport(lbm;mgt;tci;mbf;crj).
 %LMP = 0.12$/kWh; MER = 0.000329 tons/kWh, gamma=185$/tons; lmp_mer = discharge_rate*(LMP+gamma*MER) = 4*0.19 = 0.76
 %average lmp_mer = 0.76
-%range for lmp_mer : [0.5 - 1]
+%range for lmp_mer : [1 - 3]
 %multiply by 2.
 lmp_mer(lbm, 0, 2).
 lmp_mer(mgt, 0, 1).

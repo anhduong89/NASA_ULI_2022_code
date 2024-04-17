@@ -20,7 +20,7 @@ weight(W+1) :- max_weight(MW), weight(W), W < MW.
 horizon(360).
 
 % generate segment ground atoms unit.
-max_number_of_seg(30).
+max_number_of_seg(3).
 seg(0).
 seg(X+1) :- seg(X), max_number_of_seg(M), X < M.
 
