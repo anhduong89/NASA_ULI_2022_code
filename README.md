@@ -8,7 +8,8 @@ File description:
 7. solver.sh        : run file.
 
 How to run:
-in terminal : " ./solver.sh [number_of_agent] "
+
+in terminal : " ./solver.sh [number_of_agent] "  
 For example : " ./solver.sh 1 "
 
 Notice: That example run will output all answer sets (updated optimization).
