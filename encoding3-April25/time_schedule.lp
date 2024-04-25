@@ -5,11 +5,11 @@
 % start time at vertiport X+1 - start time vertiport X = flight time (X, X+1) + charge time at vertiport X+1 
 &diff {start(D, E', X+1)-start(D, E, X)} = Ft*2 :- as(D, E', X+1), distance(E, S), Ft = (S/speed), as(D, E, X).
 
-% &diff {start(D, (V, V'), X) - start_v(D, V, X)} = 0 :- as(D, (V, V'), X).
+&diff {start(D, (V, V'), X) - start_v(D, V, X)} = 0 :- as(D, (V, V'), X).
 
-% &diff {arrival_v(D, V', X) - start_v(D, V, X)} = Ft :- distance(E, S), Ft = (S/speed), as(D, (V, V'), X). 
+&diff {arrival_v(D, V', X) - start_v(D, V, X)} = Ft :- distance((V, V'), S), Ft = (S/speed), as(D, (V, V'), X). 
 
-% &diff {ready_v(D, V', X+1) - arrival_v(D, V', X)} = 15 :- as(D, (V, V'), X).
+&diff {ready_v(D, V', X+1) - arrival_v(D, V', X)} = 15 :- as(D, (V, V'), X).
 
 
 
