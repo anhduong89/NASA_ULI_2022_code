@@ -20,7 +20,7 @@ weight(W+1) :- max_weight(MW), weight(W), W < MW.
 horizon(360).
 
 % generate segment ground atoms unit.
-max_number_of_seg(4).
+max_number_of_seg(10).
 seg(0).
 seg(X+1) :- seg(X), max_number_of_seg(M), X < M.
 
@@ -36,6 +36,7 @@ seg(X+1) :- seg(X), max_number_of_seg(M), X < M.
 
 as(D, (V, V'), 0) :- agent(D), init_loc(D, V), distance((V, V'), Smin), Smin = #min {S: distance((V, V1), S), S > 0}.
 
+:- as(D, (V, V1), X), as(D, (V, V2), X), V1 != V2.
 
 % 1 {as(D, (V, V'), X): edge(V, V')} 1 :- seg(X), agent(D), max_number_of_seg(MX), X < MX.
 
