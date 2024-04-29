@@ -10,5 +10,5 @@
 #show as/3.
 % #show ch_time/3.
 #show as_w/4.
-#show no_passengers/3.
-#show passengers/3.
+% #show no_passengers/3.
+% #show passengers/3.
