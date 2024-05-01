@@ -7,8 +7,10 @@
 
 % &diff {start(D, (V, V'), X) - start_v(D, V, X)} = 0 :- as(D, (V, V'), X).
 
-&diff {arrival_v(D, V', X) - start_v(D, V, X)} = Ft :- distance((V, V'), S), Ft = (S/speed), as(D, (V, V'), X). 
+% by segment X, arrival time at vertiport V' = start time at vertiport V + flight time
+&diff {arrival_v(D, V', X) - start_v(D, V, X)} = Ft :- distance((V, V'), S), Ft = (S/speed), as(D, (V, V'), X).
 
+%ready_v is the presumed start time of agent D at vertiport V at segment X: this compute by a summation of arrival_v(D, V, X-1) and a scalar value k.
 &diff {ready_v(D, V', X+1) - arrival_v(D, V', X)} = 15 :- as(D, (V, V'), X).
 
 
@@ -32,7 +34,10 @@ as_w(D, (V, V), X, 0) :- as(D, (V, V), X).
 :- as_w(D, E, M, W), capacity(D, C), W < C, TW = #sum{W1: as_w(_, E, _, W1)}, request(_, E, RW), TW < RW.
 
 % total passengers pick up at route E not excess demand.
-:- TW = #sum{W: as_w(D, E, _, W)}, request(N, E, RW), TW > RW.
+:- TW = #sum{W, D, X: as_w(D, (V, V'), X, W)}, request(_, (V, V'), RW), TW > RW.
+
+% only one carry diff 0 and less than capacity
+% :- A = #count{D, E, X: as_w(D, E, X, W), 0 < W < C, capacity(D, C)}, request(_, E, _), A > 1.
 
 
 % restrict the time of last trip not excess the horizon.
@@ -40,3 +45,7 @@ as_w(D, (V, V), X, 0) :- as(D, (V, V), X).
 
 % revenue for each agent D at route X
 revenue(S*W*alpha/dividealpha, D, X) :- as_w(D, E, X, W), distance(E, S).
+
+% cost for each agent D at route X
+cost(S/speed*R, D, X) :- as(D, E, X), distance(E, S), lmp_mer(V, X, R).
+
