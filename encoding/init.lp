@@ -1,7 +1,7 @@
 agent(0..2).
-init_loc(0, crj).
-init_loc(1, mgt).
-init_loc(2, mbf).
+init_loc(0, mbf).
+init_loc(1, crj).
+init_loc(2, lbm).
 emax(0, 100).
 emax(1, 100).
 emax(2, 100).
@@ -14,6 +14,6 @@ dischg_rate(2, 4).
 capacity(0, 4).
 capacity(1, 4).
 capacity(2, 4).
-init_battery(0, 40).
-init_battery(1, 32).
-init_battery(2, 27).
+init_battery(0, 49).
+init_battery(1, 11).
+init_battery(2, 35).

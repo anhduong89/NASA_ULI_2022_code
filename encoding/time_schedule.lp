@@ -1,9 +1,10 @@
 % ----- TIME SCHEDULE WITH DIFFERENT CONSTRAINT
 % start time at initial vertiport = charge duration
-&diff {0-start_v(D, V, 0)} = -Ct :- as(D, (V, V'), 0), distance((V, V'), S), Ct = S/speed.
+&diff {0-start_v(D, V, 0)} = -Ct :- as(D, (V, V'), 0), distance((V, V'), S), Ct = S*minute_charged_per_mile.
+
 
 % start time at vertiport X+1 - start time vertiport X = flight time (X, X+1) + charge time at vertiport X+1 
-&diff {start_v(D, V', X+1)-start_v(D, V, X)} = Ft*2 :- distance((V, V'), S), Ft = (S/speed), as(D, (V, V'), X).
+&diff {start_v(D, V', X+1)-start_v(D, V, X)} = Ft+Ct :- distance((V, V'), S), Ft = (S/speed), as(D, (V, V'), X), Ct = S*minute_charged_per_mile.
 
 % &diff {start(D, (V, V'), X) - start_v(D, V, X)} = 0 :- as(D, (V, V'), X).
 
@@ -30,8 +31,8 @@ as_w(D, (V, V), X, 0) :- as(D, (V, V), X).
 % if agent D' pick up passenger after agent D and agent D carries less than its capacity then agent D will carry 0 passenger
 &diff {start_v(D, V, X) - start_v(D', V, Y) } <= 0:- as_w(D, (V, V'), X, W), as_w(D', (V, V'), Y, W'), D!=D', capacity(D, C), capacity(D', C'), W = 0, W' = 0.
 
-% if total passengers less than demand, then there are no agents carry less than their capacity.
-:- as_w(D, E, M, W), capacity(D, C), W < C, TW = #sum{W1: as_w(_, E, _, W1)}, request(_, E, RW), TW < RW.
+% if total passengers less than demand, then there are no agents carry less than their capacity. This help speed up the solving but limit on number of agent. Don't know y yet.
+% :- as_w(D, E, M, W), capacity(D, C), W < C, TW = #sum{W1: as_w(_, E, _, W1)}, request(_, E, RW), TW < RW.
 
 % total passengers pick up at route E not excess demand.
 :- TW = #sum{W, D, X: as_w(D, (V, V'), X, W)}, request(_, (V, V'), RW), TW > RW.
@@ -42,10 +43,3 @@ as_w(D, (V, V), X, 0) :- as(D, (V, V), X).
 
 % restrict the time of last trip not excess the horizon.
 &diff {start_v(D, V, X)-0} <= H-Ft :- as(D, (V, V'), X), seg(X), distance((V, V'), S), Ft = S/speed, horizon(H).
-
-% revenue for each agent D at route X
-revenue(S*W*alpha/dividealpha, D, X) :- as_w(D, E, X, W), distance(E, S).
-
-% cost for each agent D at route X
-cost(S/speed*R, D, X) :- as(D, E, X), distance(E, S), lmp_mer(V, X, R).
-
