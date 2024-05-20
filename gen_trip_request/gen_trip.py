@@ -162,6 +162,8 @@ vertiport = ["crj", "mbf", "tci", "lbm", "mgt"]
 
 f = open("trip_request.txt", "w")
 
+total = 0
+id = 0
 
 for v1 in vertiport:
     for v2 in vertiport:
@@ -177,11 +179,13 @@ for v1 in vertiport:
             test = random_high()
         for i in range(len(test)): 
             if test[i]:
-                trip_req = "request(" + v1 + "," + v2 + "," + str(test[i]) + "," + str(i) + ").\n"
+                trip_req = "request(" + str(id) + "," + v1 + "," + v2 + "," + str(test[i]) + "," + str(i) + ").\n"
+                id += 1
                 f.write(trip_req)
+        total += sum(test)
 
 f.close()
-
+print("Total: ", total)
 print("DONE!!!")
 
 
